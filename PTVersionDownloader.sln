@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.12.35527.113
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PTVersionDownloader", "PTVersionDownloader.csproj", "{5D601505-43A1-4CB9-9FAE-A7DEC6BC6220}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release Bundled|Any CPU = Release Bundled|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{5D601505-43A1-4CB9-9FAE-A7DEC6BC6220}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5D601505-43A1-4CB9-9FAE-A7DEC6BC6220}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5D601505-43A1-4CB9-9FAE-A7DEC6BC6220}.Release Bundled|Any CPU.ActiveCfg = Release Bundled|Any CPU
+		{5D601505-43A1-4CB9-9FAE-A7DEC6BC6220}.Release Bundled|Any CPU.Build.0 = Release Bundled|Any CPU
+		{5D601505-43A1-4CB9-9FAE-A7DEC6BC6220}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5D601505-43A1-4CB9-9FAE-A7DEC6BC6220}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

@@ -1,0 +1,63 @@
+﻿<Window x:Class="PTVersionDownloader.VersionDownloadAuto"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:PTVersionDownloader"
+        mc:Ignorable="d"
+        ResizeMode="CanMinimize" FontSize="14" WindowStartupLocation="CenterScreen"
+        Title="Download Version Automatically" Height="250" Width="600">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <StackPanel Margin="15,5,15,15" Orientation="Vertical" Grid.Row="0">
+            <FlowDocumentScrollViewer Margin="0,0,0,15" VerticalScrollBarVisibility="Hidden">
+                <FlowDocument FontSize="14" FontFamily="Inherit" PagePadding="0" TextAlignment="Left">
+                    <Paragraph>
+                        Automatic downloading uses
+                        <Hyperlink
+                            NavigateUri="https://github.com/SteamRE/DepotDownloader/"
+                            RequestNavigate="Hyperlink_RequestNavigate"
+                            Foreground="CornflowerBlue"
+                        >DepotDownloader</Hyperlink> to download the version.
+                        However, this requires entering your Steam login info (like your password).
+                        If you're not comfortable with that, or if you're experiencing issues,
+                        download manually instead with the button in the bottom left corner.
+                    </Paragraph>
+                </FlowDocument>
+            </FlowDocumentScrollViewer>
+            <Grid Margin="0,0,0,5">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <TextBlock Text="Steam username (required)" VerticalAlignment="Center" Margin="0,0,10,0" />
+                <TextBox Grid.Column="1" Height="30" VerticalAlignment="Center"
+                         x:Name="UsernameInput" Padding="3" TextWrapping="NoWrap"/>
+            </Grid>
+            <Grid Margin="0,0,0,5">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <CheckBox x:Name="RememberPassword" Checked="RememberPassword_Checked" Unchecked="RememberPassword_Checked" Grid.Column="0" VerticalAlignment="Center"/>
+                <TextBlock Grid.Column="1" Text="Remember login details" VerticalAlignment="Center" Margin="5,0,0,0" />
+            </Grid>
+        </StackPanel>
+        <Grid Margin="10" VerticalAlignment="Bottom">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <Button x:Name="ManualMode" Content="Download Manually..." Grid.Column="0" Padding="15 5"
+                    HorizontalAlignment="Left" Click="ManualMode_Click"/>
+            <Button x:Name="Cancel" Content="Cancel" Grid.Column="1" Padding="15 5" Margin="0 0 15 0"
+                    HorizontalAlignment="Right" Click="Cancel_Click"/>
+            <Button x:Name="Download" Content="Download" Grid.Column="2" Padding="15 5"
+                    HorizontalAlignment="Right" Click="Download_Click"/>
+        </Grid>
+    </Grid>
+</Window>
