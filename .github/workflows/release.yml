@@ -26,6 +26,7 @@ jobs:
         uses: KageKirin/get-csproj-version@v0
         with:
           file: PTVersionDownloader.csproj
+          xpath: //PropertyGroup/AssemblyVersion
       
       - name: GH Release
         uses: softprops/action-gh-release@v2.2.1
