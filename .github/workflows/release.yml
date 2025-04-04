@@ -6,3 +6,24 @@ on:
 jobs:
   build:
     uses: ./.github/workflows/build.yml
+  release:
+    runs-on: windows-latest
+    steps:
+      - name: Download artifacts
+        uses: actions/download-artifact@v4.2.1
+        with:
+          merge-multiple: true
+          
+      - name: Get version
+        id: package_version
+        uses: KageKirin/get-csproj-version@v0
+        with:
+          file: PTVersionDownloader.csproj
+      
+      - name: GH Release
+        uses: softprops/action-gh-release@v2.2.1
+        with:
+          tag_name: v${{ steps.package_version.outputs.version }}
+          draft: true
+          files: "*.zip"
+          fail_on_unmatched_files: true
