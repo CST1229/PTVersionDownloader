@@ -6,6 +6,8 @@ on:
 jobs:
   build:
     uses: ./.github/workflows/build.yml
+    with:
+      zipped: true
   release:
     runs-on: windows-latest
     needs: build
