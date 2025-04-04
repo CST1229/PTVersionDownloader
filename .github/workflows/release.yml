@@ -26,6 +26,7 @@ jobs:
         uses: KageKirin/get-csproj-version@v0
         with:
           file: PTVersionDownloader.csproj
+          regex: "^\\d+\\.\\d+\\.\\d+\\.\\d+$"
           xpath: //PropertyGroup/AssemblyVersion
       
       - name: GH Release
