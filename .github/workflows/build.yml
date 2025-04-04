@@ -3,6 +3,12 @@ name: Build
 on:
   workflow_dispatch:
   workflow_call:
+    inputs:
+      zipped:
+        description: 'If true, outputs double-zipped artifacts (for releases)'
+        default: false
+        required: false
+        type: boolean
   push:
     branches: [ "master" ]
 
@@ -26,8 +32,20 @@ jobs:
     
     - name: Build
       run: dotnet publish PTVersionDownloader.csproj -c Release -r win-x86 --self-contained ${{matrix.selfcontained}} -p:PublishSingleFile=True --output release-${{matrix.selfcontained}}/
-      
-    - name: Upload a Build Artifact
+    
+    - name: Create zip
+      if: ${{inputs.zipped == true}}
+      run: |
+        7z a -tzip PTVersionDownloader${{matrix.selfcontained == true && '-self-contained' || ''}}.zip ./release-${{matrix.selfcontained}}/*
+    - name: Upload artifact (zipped)
+      if: ${{inputs.zipped == true}}
+      uses: actions/upload-artifact@v4.6.2
+      with:
+        name: PTVersionDownloader${{matrix.selfcontained == true && '-self-contained' || ''}}
+        path: PTVersionDownloader${{matrix.selfcontained == true && '-self-contained' || ''}}.zip
+    
+    - name: Upload artifact (unzipped)
+      if: ${{inputs.zipped != true}}
       uses: actions/upload-artifact@v4.6.2
       with:
         name: PTVersionDownloader${{matrix.selfcontained == true && '-self-contained' || ''}}
