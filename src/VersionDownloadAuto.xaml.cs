@@ -3,6 +3,7 @@ using PTVersionDownloader.Structures;
 using System.Diagnostics;
 using System.IO;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
 
 namespace PTVersionDownloader
@@ -93,10 +94,11 @@ namespace PTVersionDownloader
             Close();
             Global.config.DownloadAutoMode = false;
             Global.SaveConfig();
-            DownloadedDepot = new VersionDownloadManual(AppID, DepotID, ManifestID, OutputDir).ShowForDepot();
+            DownloadedDepot = new VersionDownloadManual(AppID, DepotID, ManifestID, OutputDir).ShowForDepot(Owner);
         }
-        public bool ShowForDepot()
+        public bool ShowForDepot(Window owner)
         {
+            Owner = owner;
             ShowDialog();
             return DownloadedDepot;
         }

@@ -42,5 +42,6 @@ namespace PTVersionDownloader
     {
         public bool DownloadRememberPassword { get; set; } = true;
         public bool DownloadAutoMode { get; set; } = false;
+        public bool DebugMode { get; set; } = false;
     }
 }

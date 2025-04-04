@@ -18,6 +18,7 @@
                         <MenuItem Header="Re_download" x:Name="RedownloadButton" Click="DownloadVersion_Click"/>
                         <MenuItem Header="_Restore .po files" x:Name="RestoreButton" Click="RestoreButton_Click"/>
                         <MenuItem Header="_Open Folder" x:Name="OpenFolderButton" Click="OpenVersionFolder_Click"/>
+                        <MenuItem Header="_Copy Manifest ID" x:Name="CopyManifestIDButton" Click="CopyManifestIDButton_Click"/>
                         <MenuItem Header="_Delete" x:Name="DeleteButton" Click="DeleteVersion_Click"/>
                     </ContextMenu>
                 </Border.ContextMenu>
@@ -77,10 +78,10 @@
                 <fa5:ImageAwesome.Style>
                     <Style TargetType="fa5:ImageAwesome">
                         <Style.Triggers>
-                            <DataTrigger Binding="{Binding ElementName=ModGrid_SearchBar, Path=Text.IsEmpty}" Value="False">
+                            <DataTrigger Binding="{Binding ElementName=SearchBar, Path=Text.IsEmpty}" Value="False">
                                 <Setter Property="Visibility" Value="Visible"/>
                             </DataTrigger>
-                            <DataTrigger Binding="{Binding ElementName=ModGrid_SearchBar, Path=Text.IsEmpty}" Value="True">
+                            <DataTrigger Binding="{Binding ElementName=SearchBar, Path=Text.IsEmpty}" Value="True">
                                 <Setter Property="Visibility" Value="Collapsed"/>
                             </DataTrigger>
                         </Style.Triggers>
@@ -115,6 +116,7 @@ Usually, these identically-numbered versions only differ by credits or localizat
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
             <Grid 
                 Grid.Column="0"
@@ -125,13 +127,14 @@ Usually, these identically-numbered versions only differ by credits or localizat
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
                 <CheckBox
-                    Grid.Column="0" x:Name="DebugMode" VerticalAlignment="Center"
+                    Grid.Column="0" x:Name="DebugMode" VerticalAlignment="Center" Checked="DebugMode_Checked"
                 />
                 <TextBlock
                     Grid.Column="1" Text="`-debug` mode" VerticalAlignment="Center" Margin="5,0,0,0"
                 />
             </Grid>
             <Button Grid.Column="1" Padding="10,3" Margin="15,0,0,0" Content="Open Versions Folder" Click="OpenVersionsFolder_Click"/>
+            <Button Grid.Column="2" Padding="10,3" Margin="15,0,0,0" Content="About" Click="About_Click"/>
         </Grid>
     </Grid>
 </Window>

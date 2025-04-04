@@ -5,8 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PTVersionDownloader"
         mc:Ignorable="d"
-        ResizeMode="CanMinimize"
-        WindowStartupLocation="CenterScreen"
+        ResizeMode="NoResize" WindowStartupLocation="CenterOwner"
         FontSize="14"
         Title="Download Version Manually" Height="300" Width="600">
     <Grid>

@@ -4,6 +4,7 @@ using System;
 using System.Diagnostics;
 using System.IO;
 using System.Windows;
+using System.Windows.Controls;
 namespace PTVersionDownloader
 {
     /// <summary>
@@ -137,10 +138,11 @@ namespace PTVersionDownloader
             Global.config.DownloadAutoMode = true;
             Global.SaveConfig();
             if (VersionDownloadAuto.TryAutoDownload(AppID, DepotID, ManifestID, OutputDir, out DownloadedDepot)) return;
-            DownloadedDepot = new VersionDownloadAuto(AppID, DepotID, ManifestID, OutputDir).ShowForDepot();
+            DownloadedDepot = new VersionDownloadAuto(AppID, DepotID, ManifestID, OutputDir).ShowForDepot(Owner);
         }
 
-        public bool ShowForDepot() {
+        public bool ShowForDepot(Window owner) {
+            Owner = owner;
             ShowDialog();
             return DownloadedDepot;
         }

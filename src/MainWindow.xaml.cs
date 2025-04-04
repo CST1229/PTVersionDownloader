@@ -14,10 +14,13 @@ namespace PTVersionDownloader
     {
         public List<PTVersion> Versions { get; set; } = PTVersion.Versions;
 
+        public FrameworkElement? LastMenuOpened = null;
+
         public MainWindow()
         {
             Global.LoadConfig();
             InitializeComponent();
+            DebugMode.IsChecked = Global.config.DebugMode;
             VersionGrid.ItemsSource = Versions;
         }
 
@@ -45,7 +48,11 @@ namespace PTVersionDownloader
         private void UpdateVersionContainer(FrameworkElement? container, PTVersion version)
         {
             container = GetContainerOfType<Border>(container);
-            if (container is null) return;
+            if (container is null) {
+                // for context menus
+                container = LastMenuOpened;
+                if (container is null) return;
+            }
             bool isInstalled = version.IsInstalled;
             if (container.FindName("OpenFolderButton") is MenuItem openFolder)
                 openFolder.IsEnabled = isInstalled;
@@ -108,7 +115,7 @@ namespace PTVersionDownloader
             startInfo.FileName = $"{version.DownloadPath}PizzaTower.exe";
             startInfo.WindowStyle = ProcessWindowStyle.Normal;
             startInfo.WorkingDirectory = version.DownloadPath;
-            startInfo.Arguments = DebugMode.IsChecked.GetValueOrDefault() ? "-debug" : "";
+            startInfo.Arguments = Global.config.DebugMode ? "-debug" : "";
             using Process process = new Process();
             process.StartInfo = startInfo;
             process.Start();
@@ -140,11 +147,11 @@ namespace PTVersionDownloader
             {
                 if (lastFile == "")
                 {
-                    MessageBox.Show("Encountered error:\n" + err.ToString(), "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    MessageBox.Show($"Encountered error:\n{err.ToString()}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
                 else
                 {
-                    MessageBox.Show("Encountered error while trying to move " + lastFile + ":\n" + err.ToString(), "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    MessageBox.Show($"Encountered error while trying to delete {lastFile}:\n{err.ToString()}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
             }
             IsEnabled = true;
@@ -197,10 +204,10 @@ namespace PTVersionDownloader
                 {
                     return downloadedDepot;
                 }
-                return new VersionDownloadAuto(appID, depotID, manifestID, outputDir).ShowForDepot();
+                return new VersionDownloadAuto(appID, depotID, manifestID, outputDir).ShowForDepot(this);
             }
             else
-                return new VersionDownloadManual(appID, depotID, manifestID, outputDir).ShowForDepot();
+                return new VersionDownloadManual(appID, depotID, manifestID, outputDir).ShowForDepot(this);
         }
 
         private void VersionBorder_MouseDown(object sender, MouseButtonEventArgs e)
@@ -218,7 +225,34 @@ namespace PTVersionDownloader
         }
         private void DeleteVersion_Click(object sender, RoutedEventArgs e)
         {
+            FrameworkElement? button = sender as FrameworkElement;
+            if (button is null) return;
+            PTVersion? version = button.DataContext as PTVersion;
+            if (version is null) return;
 
+            MessageBoxResult result = MessageBox.Show(
+                $"Are you sure you want to delete the game files for {version.Version}? (You can always redownload it, and save data will be unaffected.)",
+                "Deleting Game Files", MessageBoxButton.YesNo, MessageBoxImage.Exclamation
+            );
+            if (result != MessageBoxResult.Yes) return;
+            try
+            {
+                Directory.Delete(version.DownloadPath, true);
+            }
+            catch (Exception err)
+            {
+                MessageBox.Show($"Encountered error while trying to delete {version.Version}:\n{err.ToString()}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            UpdateVersionContainer(button, version);
+        }
+
+        private void CopyManifestIDButton_Click(object sender, RoutedEventArgs e)
+        {
+            FrameworkElement? button = sender as FrameworkElement;
+            if (button is null) return;
+            PTVersion? version = button.DataContext as PTVersion;
+            if (version is null) return;
+            Clipboard.SetText(version.ManifestID);
         }
 
         private void VersionContextMenu_Click(object sender, RoutedEventArgs e)
@@ -226,6 +260,7 @@ namespace PTVersionDownloader
             Border? container = GetContainerOfType<Border>(sender as FrameworkElement);
             if (container?.ContextMenu is ContextMenu menu)
             {
+                LastMenuOpened = container;
                 menu.IsOpen = true;
             }
         }
@@ -237,6 +272,19 @@ namespace PTVersionDownloader
                 UpdateVersionContainer(el, version);
                 el.ContextMenu.DataContext = el.DataContext;
             }
+        }
+
+        private void DebugMode_Checked(object sender, RoutedEventArgs e)
+        {
+            Global.config.DebugMode = DebugMode.IsChecked.GetValueOrDefault();
+            Global.SaveConfig();
+        }
+
+        private void About_Click(object sender, RoutedEventArgs e)
+        {
+            var window = new AboutWindow();
+            window.Owner = this;
+            window.ShowDialog();
         }
     }
 }
