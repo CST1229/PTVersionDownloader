@@ -117,6 +117,7 @@ Usually, these identically-numbered versions only differ by credits or localizat
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
             <Grid 
                 Grid.Column="0"
@@ -133,8 +134,9 @@ Usually, these identically-numbered versions only differ by credits or localizat
                     Grid.Column="1" Text="`-debug` mode" VerticalAlignment="Center" Margin="5,0,0,0"
                 />
             </Grid>
-            <Button Grid.Column="1" Padding="10,3" Margin="15,0,0,0" Content="Open Versions Folder" Click="OpenVersionsFolder_Click"/>
-            <Button Grid.Column="2" Padding="10,3" Margin="15,0,0,0" Content="About" Click="About_Click"/>
+            <Button Grid.Column="1" Padding="10,3" Margin="15,0,0,0" Content="Identify xdelta Patch..." Click="IdentifyPatch_Click"/>
+            <Button Grid.Column="2" Padding="10,3" Margin="15,0,0,0" Content="Open Versions Folder" Click="OpenVersionsFolder_Click"/>
+            <Button Grid.Column="3" Padding="10,3" Margin="15,0,0,0" Content="About" Click="About_Click"/>
         </Grid>
     </Grid>
 </Window>

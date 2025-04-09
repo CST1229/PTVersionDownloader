@@ -1,0 +1,18 @@
+﻿<Window x:Class="PTVersionDownloader.ProgressWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:PTVersionDownloader"
+        mc:Ignorable="d" FontSize="14"
+        ResizeMode="NoResize" WindowStartupLocation="CenterOwner"
+        Title="Progress..." Width="400" SizeToContent="Height">
+    <Grid Margin="8">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <TextBlock FontSize="14" x:Name="Text" Grid.Row="0" Text="Progress..." Margin="0 0 0 8"/>
+        <ProgressBar x:Name="Progress" Grid.Row="1" Height="26" />
+    </Grid>
+</Window>

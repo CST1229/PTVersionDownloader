@@ -7,13 +7,14 @@ namespace PTVersionDownloader
     public class Global
     {
         public static char s = Path.DirectorySeparatorChar;
-        public static string assemblyLocation = AppDomain.CurrentDomain.BaseDirectory.Substring(0, AppDomain.CurrentDomain.BaseDirectory.Length - 1);
+        public static string assemblyLocation = AppDomain.CurrentDomain.BaseDirectory[..^1];
         public static string ConfigPath = $@"{assemblyLocation}{s}Config.json";
 
         public static Config config = new();
+        private static readonly JsonSerializerOptions SerializerOptions = new() { WriteIndented = true };
         public static void SaveConfig()
         {
-            string configString = JsonSerializer.Serialize(config, new JsonSerializerOptions { WriteIndented = true });
+            string configString = JsonSerializer.Serialize(config, SerializerOptions);
             try
             {
                 File.WriteAllText(ConfigPath, configString);

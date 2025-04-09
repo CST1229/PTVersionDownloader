@@ -1,6 +1,10 @@
-﻿using PTVersionDownloader.Structures;
+﻿using Microsoft.Win32;
+using PTVersionDownloader.Structures;
+using System;
 using System.Diagnostics;
 using System.IO;
+using System.Threading.Channels;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -18,25 +22,106 @@ namespace PTVersionDownloader
 
         public MainWindow()
         {
+            AppDomain.CurrentDomain.UnhandledException += new UnhandledExceptionEventHandler(OnError);
             Global.LoadConfig();
             InitializeComponent();
             DebugMode.IsChecked = Global.config.DebugMode;
             VersionGrid.ItemsSource = Versions;
         }
 
-        private void DoSearch()
+        void OnError(object sender, UnhandledExceptionEventArgs ev)
         {
-            string searchString = SearchBar.Text.Trim();
-            if (searchString == "")
-            {
-                Versions = PTVersion.Versions;
-                VersionGrid.ItemsSource = Versions;
-                return;
-            }
-            Versions = PTVersion.Versions.Where(v => v.DisplayName.Contains(searchString, StringComparison.InvariantCultureIgnoreCase)).ToList();
-            VersionGrid.ItemsSource = Versions;
+            MessageBox.Show($"Fatal error: {ev.ExceptionObject}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            Close();
+            Application.Current.Shutdown();
         }
-        private T? GetContainerOfType<T>(FrameworkElement? container) where T : FrameworkElement
+
+        private async Task DoSearch()
+        {
+            try
+            {
+                string searchString = SearchBar.Text.Trim();
+
+                // secrets
+                if (searchString.Equals("/patchidentifier", StringComparison.InvariantCultureIgnoreCase))
+                {
+                    searchString = "";
+                    IsEnabled = false;
+                    MessageBoxResult result = MessageBox.Show(
+                        "Populate patchidentifier.json with installed versions? (This may take a really long time. You might also want to run /identifiersums after this.)",
+                        "Secret Debug Command", MessageBoxButton.YesNo, MessageBoxImage.Question
+                    );
+                    if (result == MessageBoxResult.Yes)
+                    {
+                        ProgressWindow progress = new("Populating patch identifier...")
+                        {
+                            Owner = this
+                        };
+                        try
+                        {
+                            await Task.Run(() => PatchIdentifier.Populate(progress));
+                        }
+                        finally
+                        {
+                            progress.Close();
+                        }
+                        PatchIdentifier.Save();
+                        MessageBox.Show("Done.", "Secret Debug Command");
+                    }
+                    IsEnabled = true;
+                    return;
+                }
+                if (searchString.Equals("/identifiersums", StringComparison.InvariantCultureIgnoreCase))
+                {
+                    // just in case
+                    PatchIdentifier.Files = PatchIdentifier.ParseData();
+                    searchString = "";
+                    IsEnabled = false;
+                    MessageBoxResult result = MessageBox.Show(
+                        "Populate patchidentifier.json with xdelta checksums? (This will require the min version of every identifiable file to be installed.)",
+                        "Secret Debug Command", MessageBoxButton.YesNo, MessageBoxImage.Question
+                    );
+                    if (result == MessageBoxResult.Yes)
+                    {
+                        ProgressWindow progress = new("Populating patch identifier...")
+                        {
+                            Owner = this
+                        };
+                        try
+                        {
+                            await Task.Run(() => PatchIdentifier.PopulateSums(progress));
+                        }
+                        finally
+                        {
+                            progress.Close();
+                        }
+                        PatchIdentifier.Save();
+                        MessageBox.Show("Done.", "Secret Debug Command");
+                    }
+                    IsEnabled = true;
+                    return;
+                }
+
+                if (searchString == "")
+                {
+                    Versions = PTVersion.Versions;
+                    VersionGrid.ItemsSource = Versions;
+                    return;
+                }
+
+                Versions = [.. PTVersion.Versions.Where(v => v.DisplayName.Contains(searchString, StringComparison.InvariantCultureIgnoreCase))];
+                VersionGrid.ItemsSource = Versions;
+            }
+            catch(Exception e)
+            {
+                MessageBox.Show($"Error: {e}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            finally
+            {
+                IsEnabled = true;
+            }
+        }
+        private static T? GetContainerOfType<T>(FrameworkElement? container) where T : FrameworkElement
         {
             while (container is not null && container is not T)
             {
@@ -65,6 +150,7 @@ namespace PTVersionDownloader
 
         }
 
+#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
         private void SearchBar_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyboardDevice.IsKeyDown(Key.Enter))
@@ -84,13 +170,12 @@ namespace PTVersionDownloader
             SearchBar.Clear();
             DoSearch();
         }
+#pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
 
         private void DownloadOrPlay_Click(object sender, RoutedEventArgs e)
         {
-            FrameworkElement? button = sender as FrameworkElement;
-            if (button is null) return;
-            PTVersion? version = button.DataContext as PTVersion;
-            if (version is null) return;
+            if (sender is not FrameworkElement button) return;
+            if (button.DataContext is not PTVersion version) return;
             if (version.IsInstalled)
             {
                 PlayVersion(version);
@@ -101,7 +186,7 @@ namespace PTVersionDownloader
             }
             UpdateVersionContainer(button, version);
         }
-        private void PlayVersion(PTVersion version)
+        private static void PlayVersion(PTVersion version)
         {
             string exePath = $"{version.DownloadPath}PizzaTower.exe";
             if (!File.Exists(exePath))
@@ -109,23 +194,23 @@ namespace PTVersionDownloader
                 MessageBox.Show("PizzaTower.exe not found in the version's folder. Try redownloading it in the \"...\" menu.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
-            ProcessStartInfo startInfo = new ProcessStartInfo();
-            startInfo.CreateNoWindow = false;
-            startInfo.UseShellExecute = false;
-            startInfo.FileName = $"{version.DownloadPath}PizzaTower.exe";
-            startInfo.WindowStyle = ProcessWindowStyle.Normal;
-            startInfo.WorkingDirectory = version.DownloadPath;
-            startInfo.Arguments = Global.config.DebugMode ? "-debug" : "";
-            using Process process = new Process();
+            ProcessStartInfo startInfo = new()
+            {
+                CreateNoWindow = false,
+                UseShellExecute = false,
+                FileName = $"{version.DownloadPath}PizzaTower.exe",
+                WindowStyle = ProcessWindowStyle.Normal,
+                WorkingDirectory = version.DownloadPath,
+                Arguments = Global.config.DebugMode ? "-debug" : ""
+            };
+            using Process process = new();
             process.StartInfo = startInfo;
             process.Start();
         }
         private async void RestoreButton_Click(object sender, RoutedEventArgs e)
         {
-            FrameworkElement? button = sender as FrameworkElement;
-            if (button is null) return;
-            PTVersion? version = button.DataContext as PTVersion;
-            if (version is null) return;
+            if (sender is not FrameworkElement button) return;
+            if (button.DataContext is not PTVersion version) return;
 
             IsEnabled = false;
             string lastFile = "";
@@ -139,7 +224,7 @@ namespace PTVersionDownloader
                     }))
                     {
                         lastFile = file;
-                        File.Move(file, file.Substring(0, file.Length - 3), true);
+                        File.Move(file, file[..^3], true);
                     }
                 });
             }
@@ -147,21 +232,19 @@ namespace PTVersionDownloader
             {
                 if (lastFile == "")
                 {
-                    MessageBox.Show($"Encountered error:\n{err.ToString()}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    MessageBox.Show($"Encountered error:\n{err}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
                 else
                 {
-                    MessageBox.Show($"Encountered error while trying to delete {lastFile}:\n{err.ToString()}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    MessageBox.Show($"Encountered error while trying to delete {lastFile}:\n{err}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
             }
             IsEnabled = true;
         }
         private void DownloadVersion_Click(object sender, RoutedEventArgs e)
         {
-            FrameworkElement? button = sender as FrameworkElement;
-            if (button is null) return;
-            PTVersion? version = button.DataContext as PTVersion;
-            if (version is null) return;
+            if (sender is not FrameworkElement button) return;
+            if (button.DataContext is not PTVersion version) return;
             DownloadVersion(version, true);
             UpdateVersionContainer(button, version);
         }
@@ -183,17 +266,15 @@ namespace PTVersionDownloader
         }
         private void OpenVersionFolder_Click(object sender, RoutedEventArgs e)
         {
-            FrameworkElement? button = sender as FrameworkElement;
-            if (button is null) return;
-            PTVersion? version = button.DataContext as PTVersion;
-            if (version is null) return;
+            if (sender is not FrameworkElement button) return;
+            if (button.DataContext is not PTVersion version) return;
             if (!version.IsInstalled)
             {
                 button.IsEnabled = false;
                 UpdateVersionContainer(button, version);
                 return;
             }
-            Process process = Process.Start("explorer.exe", version.DownloadPath);
+            Process.Start("explorer.exe", version.DownloadPath);
         }
 
         private bool DownloadDepot(string appID, string depotID, string manifestID, string outputDir)
@@ -218,17 +299,39 @@ namespace PTVersionDownloader
             }
         }
 
+        private void IdentifyPatch_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                OpenFileDialog dialog = new()
+                {
+                    FileName = "patch.xdelta",
+                    DefaultExt = ".xdelta",
+                    Filter = "xdelta patches (*.xdelta)|*.xdelta|All files (*.*)|*",
+                };
+                bool? result = dialog.ShowDialog();
+                if (!result.GetValueOrDefault()) return;
+                Tuple<string, PTVersion> message = PatchIdentifier.Identify(dialog.FileName);
+                if (Versions.Contains(message.Item2)) {
+                    VersionGrid.SelectedValue = message.Item2;
+                }
+                MessageBox.Show(message.Item1, "Result", MessageBoxButton.OK);
+            }
+            catch(Exception ex)
+            {
+                MessageBox.Show($"Could not identify patch: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
         private void OpenVersionsFolder_Click(object sender, RoutedEventArgs e)
         {
             Directory.CreateDirectory(PTVersion.VersionsFolder);
-            Process process = Process.Start("explorer.exe", PTVersion.VersionsFolder);
+            Process.Start("explorer.exe", PTVersion.VersionsFolder);
         }
         private void DeleteVersion_Click(object sender, RoutedEventArgs e)
         {
-            FrameworkElement? button = sender as FrameworkElement;
-            if (button is null) return;
-            PTVersion? version = button.DataContext as PTVersion;
-            if (version is null) return;
+            if (sender is not FrameworkElement button) return;
+            if (button.DataContext is not PTVersion version) return;
 
             MessageBoxResult result = MessageBox.Show(
                 $"Are you sure you want to delete the game files for {version.Version}? (You can always redownload it, and save data will be unaffected.)",
@@ -241,17 +344,15 @@ namespace PTVersionDownloader
             }
             catch (Exception err)
             {
-                MessageBox.Show($"Encountered error while trying to delete {version.Version}:\n{err.ToString()}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show($"Encountered error while trying to delete {version.Version}:\n{err}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
             UpdateVersionContainer(button, version);
         }
 
         private void CopyManifestIDButton_Click(object sender, RoutedEventArgs e)
         {
-            FrameworkElement? button = sender as FrameworkElement;
-            if (button is null) return;
-            PTVersion? version = button.DataContext as PTVersion;
-            if (version is null) return;
+            if (sender is not FrameworkElement button) return;
+            if (button.DataContext is not PTVersion version) return;
             Clipboard.SetText(version.ManifestID);
         }
 
@@ -282,8 +383,10 @@ namespace PTVersionDownloader
 
         private void About_Click(object sender, RoutedEventArgs e)
         {
-            var window = new AboutWindow();
-            window.Owner = this;
+            var window = new AboutWindow
+            {
+                Owner = this
+            };
             window.ShowDialog();
         }
     }

@@ -13,6 +13,8 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+	  <None Remove="Dependencies\README.txt" />
+	  <None Remove="Dependencies\xdelta.exe" />
 	  <None Remove="src\assets\icon_128x128.png" />
 	</ItemGroup>
 
@@ -29,18 +31,25 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<Content Include="Dependencies\DepotDownloader.ABOUT.txt">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</Content>
 		<Content Include="Dependencies\DepotDownloader.exe">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</Content>
 		<Content Include="Dependencies\DepotDownloader.LICENSE.txt">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</Content>
+		<Content Include="Dependencies\patchidentifier.json">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+			<TargetPath>patchidentifier.json</TargetPath>
+		</Content>
 		<Content Include="Dependencies\ptversions.json">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 			<TargetPath>ptversions.json</TargetPath>
+		</Content>
+		<Content Include="Dependencies\README.txt">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Dependencies\xdelta.exe">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</Content>
 		<Content Include="LICENSE.txt">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

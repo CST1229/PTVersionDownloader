@@ -1,0 +1,554 @@
+[
+  {
+    "Name": "PizzaTower.exe",
+    "MinVersion": "V1.0.594",
+    "MaxVersion": "V1.1.271",
+    "Size": 7040000,
+    "FirstChecksum": "7040000",
+    "MD5": "b2d54e6e34f87f6baabb6df4308190d0"
+  },
+  {
+    "Name": "sound/Desktop/Master.bank",
+    "MinVersion": "V1.1.0",
+    "MaxVersion": "V1.1.271",
+    "Size": 4660,
+    "FirstChecksum": "4660",
+    "MD5": "42ab8262983b12b1def8704749d7b46d"
+  },
+  {
+    "Name": "sound/Desktop/Master.strings.bank",
+    "MinVersion": "V1.1.011",
+    "MaxVersion": "V1.1.271",
+    "Size": 28980,
+    "FirstChecksum": "28980",
+    "MD5": "0b6f6efe9ad7f2077075b98e7cc965be"
+  },
+  {
+    "Name": "data.win",
+    "MinVersion": "V1.0.594",
+    "MaxVersion": "V1.0.594",
+    "Size": 88972700,
+    "FirstChecksum": "8388608",
+    "MD5": "00d0ff6c66af2d7dd34b0150067ecdd5"
+  },
+  {
+    "Name": "sound/Desktop/Master.bank",
+    "MinVersion": "V1.0.594",
+    "MaxVersion": "V1.0.5952",
+    "Size": 4366,
+    "FirstChecksum": "4366",
+    "MD5": "7043901b2a6891d362f43e9b39186cf9"
+  },
+  {
+    "Name": "data.win",
+    "MinVersion": "V1.1.271",
+    "MaxVersion": "V1.1.271",
+    "Size": 92440220,
+    "FirstChecksum": "8388608",
+    "MD5": "1d2e63ab36fca1d36b9c5b52dccf4d1c"
+  },
+  {
+    "Name": "sound/Desktop/Master.strings.bank",
+    "MinVersion": "V1.0.594",
+    "MaxVersion": "V1.0.5952",
+    "Size": 25498,
+    "FirstChecksum": "25498",
+    "MD5": "d8084228f41f96dcd65042a0b7c1a929"
+  },
+  {
+    "Name": "data.win",
+    "MinVersion": "V1.1.1",
+    "MaxVersion": "V1.1.1",
+    "Size": 92443676,
+    "FirstChecksum": "8388608",
+    "MD5": "8fd10f3740ca6f18f35e161e74254987"
+  },
+  {
+    "Name": "sound/Desktop/sfx.bank",
+    "MinVersion": "V1.1.011",
+    "MaxVersion": "V1.1.271",
+    "Size": 16972896,
+    "FirstChecksum": "8388608",
+    "MD5": "f23b933666707a1a1590538c9bee2dac"
+  },
+  {
+    "Name": "PizzaTower.exe",
+    "MinVersion": "V1.0.184",
+    "MaxVersion": "V1.0.311",
+    "Size": 7018496,
+    "FirstChecksum": "7018496",
+    "MD5": "2f7b788caca5b7377fbd78ec311f4dfc"
+  },
+  {
+    "Name": "data.win",
+    "MinVersion": "V1.0.196",
+    "MaxVersion": "V1.0.196",
+    "Size": 86874140,
+    "FirstChecksum": "8388608",
+    "MD5": "685efa15a9816666d3f83844b79bea67"
+  },
+  {
+    "Name": "sound/Desktop/Master.bank",
+    "MinVersion": "V1.0.184",
+    "MaxVersion": "V1.0.311",
+    "Size": 4220,
+    "FirstChecksum": "4220",
+    "MD5": "0736935e0499061ddec22ebebc3bd121"
+  },
+  {
+    "Name": "sound/Desktop/Master.strings.bank",
+    "MinVersion": "V1.0.185",
+    "MaxVersion": "V1.0.311",
+    "Size": 25188,
+    "FirstChecksum": "25188",
+    "MD5": "01c7b0d7c96b9a41bc5153a613b6b5cf"
+  },
+  {
+    "Name": "sound/Desktop/sfx.bank",
+    "MinVersion": "V1.0.594",
+    "MaxVersion": "V1.0.5952",
+    "Size": 14391456,
+    "FirstChecksum": "8388608",
+    "MD5": "e95615abfba0bcf0834376592efe7cb9"
+  },
+  {
+    "Name": "sound/Desktop/music.bank",
+    "MinVersion": "V1.0.594",
+    "MaxVersion": "V1.0.5952",
+    "Size": 155483264,
+    "FirstChecksum": "8388608",
+    "MD5": "0234b1d044abafb6e78b448221f024b9"
+  },
+  {
+    "Name": "sound/Desktop/music.bank",
+    "MinVersion": "V1.0.185",
+    "MaxVersion": "V1.0.311",
+    "Size": 144106528,
+    "FirstChecksum": "8388608",
+    "MD5": "04458a6da5891c6af8966f3357f5306e"
+  },
+  {
+    "Name": "sound/Desktop/music.bank",
+    "MinVersion": "V1.1.034",
+    "MaxVersion": "V1.1.271",
+    "Size": 182966944,
+    "FirstChecksum": "8388608",
+    "MD5": "dfd86d5b7c56874dcd1e1c286928fa3d"
+  },
+  {
+    "Name": "data.win",
+    "MinVersion": "V1.1.063",
+    "MaxVersion": "V1.1.063",
+    "Size": 92400540,
+    "FirstChecksum": "8388608",
+    "MD5": "b2239b367206b989890420c5a26bde6f"
+  },
+  {
+    "Name": "sound/Desktop/sfx.bank",
+    "MinVersion": "V1.0.185",
+    "MaxVersion": "V1.0.311",
+    "Size": 14199584,
+    "FirstChecksum": "8388608",
+    "MD5": "2e3e608fa08fa153a5a7eb7afb59ec63"
+  },
+  {
+    "Name": "data.win",
+    "MinVersion": "V1.1.27",
+    "MaxVersion": "V1.1.27",
+    "Size": 92439964,
+    "FirstChecksum": "8388608",
+    "MD5": "44889233da70baac44eca29ec9e9550b"
+  },
+  {
+    "Name": "data.win",
+    "MinVersion": "V1.0.311",
+    "MaxVersion": "V1.0.311",
+    "Size": 87238300,
+    "FirstChecksum": "8388608",
+    "MD5": "7baebb150eb9cc1577a83fee7fac0536"
+  },
+  {
+    "Name": "data.win",
+    "MinVersion": "V1.0.195",
+    "MaxVersion": "V1.0.195",
+    "Size": 86873116,
+    "FirstChecksum": "8388608",
+    "MD5": "b996407636b95f4c11ec2cf8cdb44b40"
+  },
+  {
+    "Name": "data.win",
+    "MinVersion": "V1.1.261",
+    "MaxVersion": "V1.1.261",
+    "Size": 92439836,
+    "FirstChecksum": "8388608",
+    "MD5": "978bb0224b72d094c0dcf288a220f0c9"
+  },
+  {
+    "Name": "data.win",
+    "MinVersion": "V1.0.31",
+    "MaxVersion": "V1.0.31",
+    "Size": 87238172,
+    "FirstChecksum": "8388608",
+    "MD5": "0aa5bca7b59ba874b588afa91c28964b"
+  },
+  {
+    "Name": "data.win",
+    "MinVersion": "V1.0.194",
+    "MaxVersion": "V1.0.194",
+    "Size": 86873116,
+    "FirstChecksum": "8388608",
+    "MD5": "e6504b3c1740db477a4f6d5a050ae7b5"
+  },
+  {
+    "Name": "data.win",
+    "MinVersion": "V1.1.26",
+    "MaxVersion": "V1.1.26",
+    "Size": 92440092,
+    "FirstChecksum": "8388608",
+    "MD5": "96bc1ba7c518785af9e8c3d40fa510c1"
+  },
+  {
+    "Name": "data.win",
+    "MinVersion": "V1.1.052",
+    "MaxVersion": "V1.1.052",
+    "Size": 92397980,
+    "FirstChecksum": "8388608",
+    "MD5": "e6a3fb3a9740001350ace758eefbae3c"
+  },
+  {
+    "Name": "data.win",
+    "MinVersion": "V1.0.215",
+    "MaxVersion": "V1.0.215",
+    "Size": 86896924,
+    "FirstChecksum": "8388608",
+    "MD5": "b1415c282ab0aa243367b87ed8aff847"
+  },
+  {
+    "Name": "data.win",
+    "MinVersion": "V1.1.062",
+    "MaxVersion": "V1.1.062",
+    "Size": 92400540,
+    "FirstChecksum": "8388608",
+    "MD5": "b3092be21cc6ec9afbfaa00429225a44"
+  },
+  {
+    "Name": "data.win",
+    "MinVersion": "V1.0.3",
+    "MaxVersion": "V1.0.3",
+    "Size": 87237532,
+    "FirstChecksum": "8388608",
+    "MD5": "732260297e3ad7646823a6c3a1c232d8"
+  },
+  {
+    "Name": "data.win",
+    "MinVersion": "V1.0.191",
+    "MaxVersion": "V1.0.191",
+    "Size": 86863132,
+    "FirstChecksum": "8388608",
+    "MD5": "cd5ed86161d1890eb67c739fe6474a3a"
+  },
+  {
+    "Name": "data.win",
+    "MinVersion": "V1.1.042",
+    "MaxVersion": "V1.1.042",
+    "Size": 92397084,
+    "FirstChecksum": "8388608",
+    "MD5": "68c6acab4d5992c1b18ca0ecf21c6d91"
+  },
+  {
+    "Name": "data.win",
+    "MinVersion": "V1.0.193",
+    "MaxVersion": "V1.0.193",
+    "Size": 86864156,
+    "FirstChecksum": "8388608",
+    "MD5": "c09d0cbbb8e8c6cfc53a2f9dfdec1584"
+  },
+  {
+    "Name": "data.win",
+    "MinVersion": "V1.0.212",
+    "MaxVersion": "V1.0.212",
+    "Size": 86890268,
+    "FirstChecksum": "8388608",
+    "MD5": "59a4df924cabf5df745c63d068a055be"
+  },
+  {
+    "Name": "data.win",
+    "MinVersion": "V1.1.25",
+    "MaxVersion": "V1.1.25",
+    "Size": 92437788,
+    "FirstChecksum": "8388608",
+    "MD5": "32197b150a4c16294831f7210d10b3ab"
+  },
+  {
+    "Name": "data.win",
+    "MinVersion": "V1.1.22",
+    "MaxVersion": "V1.1.22",
+    "Size": 92436636,
+    "FirstChecksum": "8388608",
+    "MD5": "ab8a50ed687ae5426fdc62ca6b3e811c"
+  },
+  {
+    "Name": "data.win",
+    "MinVersion": "V1.1.23",
+    "MaxVersion": "V1.1.23",
+    "Size": 92437788,
+    "FirstChecksum": "8388608",
+    "MD5": "c2ec498f237f550f83db302fe9050bbb"
+  },
+  {
+    "Name": "data.win",
+    "MinVersion": "V1.1.041",
+    "MaxVersion": "V1.1.041",
+    "Size": 92396956,
+    "FirstChecksum": "8388608",
+    "MD5": "5016488f71c99a22291f87f9be814e7c"
+  },
+  {
+    "Name": "data.win",
+    "MinVersion": "V1.0.214",
+    "MaxVersion": "V1.0.214",
+    "Size": 86891292,
+    "FirstChecksum": "8388608",
+    "MD5": "54b7fa6a5bd02f6930fd142d729fa68b"
+  },
+  {
+    "Name": "data.win",
+    "MinVersion": "V1.0.192",
+    "MaxVersion": "V1.0.192",
+    "Size": 86863132,
+    "FirstChecksum": "8388608",
+    "MD5": "1434eec2ff5748b8617b8865732dcd6f"
+  },
+  {
+    "Name": "data.win",
+    "MinVersion": "V1.1.053",
+    "MaxVersion": "V1.1.053",
+    "Size": 92399004,
+    "FirstChecksum": "8388608",
+    "MD5": "2658faf0e3ebc2ee9a380d41aafe6add"
+  },
+  {
+    "Name": "data.win",
+    "MinVersion": "V1.1.034",
+    "MaxVersion": "V1.1.034",
+    "Size": 92396060,
+    "FirstChecksum": "8388608",
+    "MD5": "2664cbbcc9346981d8bc2974b552d50a"
+  },
+  {
+    "Name": "data.win",
+    "MinVersion": "V1.0.19",
+    "MaxVersion": "V1.0.19",
+    "Size": 86862364,
+    "FirstChecksum": "8388608",
+    "MD5": "2409e8f72ae063e065ac483ada598a55"
+  },
+  {
+    "Name": "data.win",
+    "MinVersion": "V1.0.187",
+    "MaxVersion": "V1.0.187",
+    "Size": 86862236,
+    "FirstChecksum": "8388608",
+    "MD5": "e57b177b0d7aff6440c8847c6dd32827"
+  },
+  {
+    "Name": "data.win",
+    "MinVersion": "V1.1.2",
+    "MaxVersion": "V1.1.2",
+    "Size": 92443804,
+    "FirstChecksum": "8388608",
+    "MD5": "27489d1a841dfefd53fd9d2cede764d3"
+  },
+  {
+    "Name": "data.win",
+    "MinVersion": "V1.0.5951",
+    "MaxVersion": "V1.0.5951",
+    "Size": 89068700,
+    "FirstChecksum": "8388608",
+    "MD5": "e4512393853ded62d8a5b89f738fc495"
+  },
+  {
+    "Name": "data.win",
+    "MinVersion": "V1.1.02",
+    "MaxVersion": "V1.1.02",
+    "Size": 92392348,
+    "FirstChecksum": "8388608",
+    "MD5": "862b33d2e7320ac299e1abc663e8c0f3"
+  },
+  {
+    "Name": "data.win",
+    "MinVersion": "V1.0.211",
+    "MaxVersion": "V1.0.211",
+    "Size": 86890012,
+    "FirstChecksum": "8388608",
+    "MD5": "53e844a880d0189a1adfb870af9120b3"
+  },
+  {
+    "Name": "data.win",
+    "MinVersion": "V1.0.184",
+    "MaxVersion": "V1.0.184",
+    "Size": 86858652,
+    "FirstChecksum": "8388608",
+    "MD5": "bb9a4470a9de55dd4802b4fb2cdb2381"
+  },
+  {
+    "Name": "data.win",
+    "MinVersion": "V1.1.21",
+    "MaxVersion": "V1.1.21",
+    "Size": 92435996,
+    "FirstChecksum": "8388608",
+    "MD5": "94d33eb701a9d2be40395797c32b5acb"
+  },
+  {
+    "Name": "data.win",
+    "MinVersion": "V1.0.186",
+    "MaxVersion": "V1.0.186",
+    "Size": 86858524,
+    "FirstChecksum": "8388608",
+    "MD5": "91274e95056957ca71b3ddc093037999"
+  },
+  {
+    "Name": "data.win",
+    "MinVersion": "V1.1.24",
+    "MaxVersion": "V1.1.24",
+    "Size": 92437788,
+    "FirstChecksum": "8388608",
+    "MD5": "c16e60450e0198fc6ee4f1911d1c747c"
+  },
+  {
+    "Name": "sound/Desktop/Master.strings.bank",
+    "MinVersion": "V1.0.184",
+    "MaxVersion": "V1.0.184",
+    "Size": 25142,
+    "FirstChecksum": "25142",
+    "MD5": "769022a563fbafa33d1366f684c428eb"
+  },
+  {
+    "Name": "data.win",
+    "MinVersion": "V1.0.213",
+    "MaxVersion": "V1.0.213",
+    "Size": 86891292,
+    "FirstChecksum": "8388608",
+    "MD5": "4b2f9526b199a977b6d48eee1002888f"
+  },
+  {
+    "Name": "sound/Desktop/sfx.bank",
+    "MinVersion": "V1.0.184",
+    "MaxVersion": "V1.0.184",
+    "Size": 14199168,
+    "FirstChecksum": "8388608",
+    "MD5": "c2555d9840ccb5241a31674e40735393"
+  },
+  {
+    "Name": "sound/Desktop/music.bank",
+    "MinVersion": "V1.1.011",
+    "MaxVersion": "V1.1.033",
+    "Size": 182967104,
+    "FirstChecksum": "8388608",
+    "MD5": "0f46d7826a0b1e323115bdf4354edf6c"
+  },
+  {
+    "Name": "data.win",
+    "MinVersion": "V1.0.189",
+    "MaxVersion": "V1.0.189",
+    "Size": 86861724,
+    "FirstChecksum": "8388608",
+    "MD5": "d4ee31fe532d653cbcd6a542b422417a"
+  },
+  {
+    "Name": "sound/Desktop/music.bank",
+    "MinVersion": "V1.0.184",
+    "MaxVersion": "V1.0.184",
+    "Size": 143627744,
+    "FirstChecksum": "8388608",
+    "MD5": "7fb3ace58d25b2033b384ab77e6a10df"
+  },
+  {
+    "Name": "data.win",
+    "MinVersion": "V1.0.185",
+    "MaxVersion": "V1.0.185",
+    "Size": 86858524,
+    "FirstChecksum": "8388608",
+    "MD5": "87961160cce494278540334e7338ff01"
+  },
+  {
+    "Name": "data.win",
+    "MinVersion": "V1.1.033",
+    "MaxVersion": "V1.1.033",
+    "Size": 92395932,
+    "FirstChecksum": "8388608",
+    "MD5": "9ead9f0cb8e4edecee43db57f31bb1d5"
+  },
+  {
+    "Name": "data.win",
+    "MinVersion": "V1.0.21",
+    "MaxVersion": "V1.0.21",
+    "Size": 86889244,
+    "FirstChecksum": "8388608",
+    "MD5": "c5c4de53123b05fa547d6d16b3b38288"
+  },
+  {
+    "Name": "data.win",
+    "MinVersion": "V1.1.011",
+    "MaxVersion": "V1.1.011",
+    "Size": 92391324,
+    "FirstChecksum": "8388608",
+    "MD5": "869fdfc748da61f15e30eea8e9734836"
+  },
+  {
+    "Name": "sound/Desktop/Master.strings.bank",
+    "MinVersion": "V1.1.0",
+    "MaxVersion": "V1.1.0",
+    "Size": 28944,
+    "FirstChecksum": "28944",
+    "MD5": "7115381d27e76007e9012fae3a832c2d"
+  },
+  {
+    "Name": "data.win",
+    "MinVersion": "V1.0.188",
+    "MaxVersion": "V1.0.188",
+    "Size": 86862236,
+    "FirstChecksum": "8388608",
+    "MD5": "9d4349de899075119104859476624efe"
+  },
+  {
+    "Name": "sound/Desktop/sfx.bank",
+    "MinVersion": "V1.1.0",
+    "MaxVersion": "V1.1.0",
+    "Size": 16972000,
+    "FirstChecksum": "8388608",
+    "MD5": "940dc9c6115c5e279d6152c202907821"
+  },
+  {
+    "Name": "data.win",
+    "MinVersion": "V1.1.0",
+    "MaxVersion": "V1.1.0",
+    "Size": 92387612,
+    "FirstChecksum": "8388608",
+    "MD5": "0bea02e51f8214e4fd6c7b75889a2f79"
+  },
+  {
+    "Name": "data.win",
+    "MinVersion": "V1.0.2",
+    "MaxVersion": "V1.0.2",
+    "Size": 86888476,
+    "FirstChecksum": "8388608",
+    "MD5": "9a98217330c58c0aef02c26a09e85b99"
+  },
+  {
+    "Name": "sound/Desktop/music.bank",
+    "MinVersion": "V1.1.0",
+    "MaxVersion": "V1.1.0",
+    "Size": 182967072,
+    "FirstChecksum": "8388608",
+    "MD5": "34ea20e5fd6b88389abe84b9d2570152"
+  },
+  {
+    "Name": "data.win",
+    "MinVersion": "V1.0.5952",
+    "MaxVersion": "V1.0.5952",
+    "Size": 89068828,
+    "FirstChecksum": "8388608",
+    "MD5": "d37b82ce5005fbd844aaa273d1984dde"
+  }
+]
