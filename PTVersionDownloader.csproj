@@ -10,7 +10,13 @@
 		<FileVersion>$(AssemblyVersion)</FileVersion>
 		<AssemblyVersion>1.1.0.0</AssemblyVersion>
 		<PackageLicenseExpression>MPL-2.0</PackageLicenseExpression>
+		<CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
 	</PropertyGroup>
+
+	<ItemGroup>
+	  <None Remove="Dependencies\DepotDownloader\DepotDownloader.deps.json" />
+	  <None Remove="Dependencies\DepotDownloader\protobuf-net.dll" />
+	</ItemGroup>
 
 	<ItemGroup>
 		<ApplicationDefinition Include="src\App.xaml" />
@@ -21,42 +27,45 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<Content Include="Dependencies\patchidentifier.json">
+		<None Include="Dependencies\patchidentifier.json">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 			<TargetPath>patchidentifier.json</TargetPath>
-		</Content>
-		<Content Include="Dependencies\ptversions.json">
+		</None>
+		<None Include="Dependencies\ptversions.json">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 			<TargetPath>ptversions.json</TargetPath>
-		</Content>
+		</None>
 		
-		<Content Include="Dependencies\DepotDownloader\*">
+		<None Include="Dependencies\README.txt">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</Content>
-		<Content Include="Dependencies\README.txt">
+		</None>
+		<None Include="Dependencies\xdelta.exe">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</Content>
-		<Content Include="Dependencies\xdelta.exe">
+		</None>
+		<None Include="Dependencies\xdelta.LICENSE.txt">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</Content>
-		<Content Include="Dependencies\xdelta.LICENSE.txt">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</Content>
+		</None>
 
-		<Content Include="LICENSE.txt">
+		<None Include="LICENSE.txt">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</Content>
+		</None>
 	</ItemGroup>
 
 	<ItemGroup>
 	  <Resource Include="src\assets\icon_128x128.png" />
 	</ItemGroup>
 
-	<ItemGroup>
-	  <None Update="LICENSE.txt">
-	    <Pack>True</Pack>
-	    <PackagePath>\</PackagePath>
-	  </None>
-	</ItemGroup>
-
+	<Target Name="copyDepotDownloader" AfterTargets="AfterBuild">
+		<ItemGroup>
+			<DepotDownloaderStuff Include="Dependencies\DepotDownloader\*.*"/>
+		</ItemGroup>
+		<Copy SourceFiles="@(DepotDownloaderStuff)" DestinationFolder="$(OutDir)\Dependencies\DepotDownloader\" />
+	</Target>
+	<Target Name="copyDepotDownloader" AfterTargets="Publish">
+		<ItemGroup>
+			<DepotDownloaderStuff Include="Dependencies\DepotDownloader\*.*"/>
+		</ItemGroup>
+		<Copy SourceFiles="@(DepotDownloaderStuff)" DestinationFolder="$(PublishDir)\Dependencies\DepotDownloader\" />
+	</Target>
+	
 </Project>
