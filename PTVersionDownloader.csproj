@@ -13,16 +13,6 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-	  <None Remove="Dependencies\README.txt" />
-	  <None Remove="Dependencies\xdelta.exe" />
-	  <None Remove="src\assets\icon_128x128.png" />
-	</ItemGroup>
-
-	<ItemGroup>
-		<Page Remove="src\App.xaml" />
-	</ItemGroup>
-
-	<ItemGroup>
 		<ApplicationDefinition Include="src\App.xaml" />
 	</ItemGroup>
 
