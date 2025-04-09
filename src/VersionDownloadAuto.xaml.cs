@@ -53,7 +53,7 @@ namespace PTVersionDownloader
 
         private static bool DoDownload(bool rememberPassword, string appID, string depotID, string manifestID, string username, string outputDir)
         {
-            string depotdownloader = $"{Global.assemblyLocation}{Global.s}Dependencies{Global.s}DepotDownloader.exe";
+            string depotdownloader = $"{Global.assemblyLocation}{Global.s}Dependencies{Global.s}DepotDownloader{Global.s}DepotDownloader.exe";
             if (!File.Exists(depotdownloader))
             {
                 MessageBox.Show($"{depotdownloader} was not found.\nPlease try redownloading the program.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);

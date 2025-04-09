@@ -271,6 +271,13 @@ namespace PTVersionDownloader
 
         private async Task DoIdentifyPatch()
         {
+            string xdelta = $"{Global.assemblyLocation}{Global.s}Dependencies{Global.s}xdelta.exe";
+            if (!File.Exists(xdelta))
+            {
+                MessageBox.Show($"{xdelta} was not found.\nPlease try redownloading the program.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
             try
             {
                 OpenFileDialog dialog = new()
