@@ -1,14 +1,12 @@
 ﻿using PTVersionDownloader.Structures;
 using System.Diagnostics;
-using System;
 using System.IO;
 using System.Security.Cryptography;
 using System.Text;
 using System.Text.Json;
 using System.Windows;
-using System.Reflection.PortableExecutable;
-using System.Threading.Tasks;
 using System.Text.RegularExpressions;
+using System.Transactions;
 
 namespace PTVersionDownloader
 {
@@ -77,8 +75,6 @@ namespace PTVersionDownloader
             public string MinVersion { get; set; } = "";
             public string MaxVersion { get; set; } = "";
             public long Size { get; set; } = 0;
-            // this is actually used for the copy window length. any unique-ish part of an xdelta patch, basically
-            public string FirstChecksum { get; set; } = "";
             public string MD5 { get; set; } = "";
         }
 
@@ -184,89 +180,9 @@ namespace PTVersionDownloader
             return sBuilder.ToString();
         }
 
-
-        public static void PopulateSums(ProgressWindow? progress)
-        {
-            Action incrementer = () => { };
-            if (progress is not null)
-            {
-                progress.Dispatcher.Invoke(() =>
-                {
-                    progress.Show();
-                    progress.SetMax(Files.Count);
-                });
-                incrementer = () => {
-                    progress.Dispatcher.Invoke(progress.Increment);
-                };
-            }
-            Parallel.ForEach(Files, (file) =>
-            {
-                file.FirstChecksum = GetAdlerChunkSum(Path.Join(PTVersion.VersionsFolder, file.MinVersion, file.Name));
-                incrementer();
-            });
-        }
-
-        public readonly static Regex SumRegex = SumRegexInternal();
-
-        [GeneratedRegex("VCDIFF copy window length:\\s+(\\w+)", RegexOptions.IgnoreCase | RegexOptions.Compiled, "en-US")]
-        private static partial Regex SumRegexInternal();
-
-        public static string GetAdlerChunkSum(string fileName)
-        {
-            if (!File.Exists(fileName)) return "";
-
-            ProcessStartInfo createInfo = new()
-            {
-                CreateNoWindow = true,
-                FileName = XDeltaPath,
-                RedirectStandardOutput = true,
-                RedirectStandardError = true,
-                StandardOutputEncoding = Encoding.Latin1,
-                WorkingDirectory = Path.GetDirectoryName(fileName),
-                ArgumentList = {
-                    "-c", "-e", "-s", fileName, fileName,
-                },
-            };
-            ProcessStartInfo printInfo = new()
-            {
-                CreateNoWindow = true,
-                FileName = XDeltaPath,
-                RedirectStandardOutput = true,
-                RedirectStandardInput = true,
-                RedirectStandardError = true,
-                StandardInputEncoding = Encoding.Latin1,
-                WorkingDirectory = Path.GetDirectoryName(fileName),
-                ArgumentList = {
-                    "printhdr", "-c", "-v", "-v",
-                },
-            };
-
-            using Process create = new();
-            create.StartInfo = createInfo;
-            create.Start();
-            string deltaOutput = create.StandardOutput.ReadToEnd();
-            create.WaitForExit();
-            if (create.ExitCode != 0)
-            {
-                throw new Exception($"Patch creation exited with code {create.ExitCode}. Error output:\n{create.StandardOutput.ReadToEnd()}");
-            }
-
-            using Process print = new();
-            print.StartInfo = printInfo;
-            print.Start();
-            print.StandardInput.Write(deltaOutput);
-            print.StandardInput.Close();
-            string output = print.StandardOutput.ReadToEnd();
-            print.WaitForExit();
-            if (print.ExitCode != 0)
-            {
-                throw new Exception($"Patch analysis exited with code {print.ExitCode}. Error output:\n{print.StandardOutput.ReadToEnd()}");
-            }
-
-            var sumResult = SumRegex.Match(output);
-            if (sumResult.Success) return sumResult.Groups[1].Value;
-            return "";
-        }
+        public static readonly Regex SourceCopyRegex = SourceCopyRegexInternal();
+        [GeneratedRegex("(\\d+)\\s+S@(\\d+)", RegexOptions.IgnoreCase | RegexOptions.Compiled, "en-US")]
+        private static partial Regex SourceCopyRegexInternal();
 
         public static Tuple<string, PTVersion> Identify(string fileName)
         {
@@ -278,46 +194,50 @@ namespace PTVersionDownloader
                 RedirectStandardError = true,
                 WorkingDirectory = Path.GetDirectoryName(fileName),
                 ArgumentList = {
-                    "printhdr", "-v", "-v", fileName,
+                    "printdelta", fileName,
                 },
             };
 
             using Process print = new();
             print.StartInfo = printInfo;
             print.Start();
+
+            long maxAddr = 0;
+            while (true) {
+                string? line = print.StandardOutput.ReadLine();
+                if (line is null) break;
+                foreach (Match match in SourceCopyRegex.Matches(line))
+                {
+                    maxAddr = Convert.ToInt64(match.Groups[2].Value) + Convert.ToInt64(match.Groups[1].Value);
+                }
+            }
             string output = print.StandardOutput.ReadToEnd();
             print.WaitForExit();
             if (print.ExitCode != 0)
             {
-                throw new Exception($"Patch analysis exited with code {print.ExitCode}. Error output:\n{print.StandardOutput.ReadToEnd()}");
+                throw new PatchIdentifierException($"Patch analysis exited with code {print.ExitCode}. Error output:\n{print.StandardError.ReadToEnd()}");
             }
 
-            var sumResult = SumRegex.Match(output);
-            string sum = "not found";
-            if (sumResult.Success)
+            FileData? file = Files.FirstOrDefault(file => file is not null && file.Size == maxAddr, null);
+            if (file is not null && GetVersionFromString(file.MaxVersion) is PTVersion ver)
             {
-                sum = sumResult.Groups[1].Value;
-                var file = Files.FirstOrDefault(v => v is not null && v.FirstChecksum == sum, null);
-                if (file is not null)
-                {
-                    if (GetVersionFromString(file.MaxVersion) is PTVersion ver)
-                    {
-                        return new Tuple<string, PTVersion>(MessageFor(file), ver);
-                    }
-                    throw new Exception($"Checksum and file found, but no matching version. Sum:\n{sum}\nMax ver:{file.MaxVersion}");
-                }
-                throw new Exception($"Checksum found, but no matching file. Output:\n{output}");
+                return new Tuple<string, PTVersion>(MessageFor(file), ver);
             }
 
-            throw new Exception($"No checksum found. Output:\n{output}");
+            throw new PatchIdentifierException($"Couldn't find version from approximate source file size (determined to be {maxAddr}).");
+        }
+
+        // just for identification of user errors that don't need stack dumps
+        public class PatchIdentifierException(string str) : Exception(str)
+        {
         }
 
         private static string MessageFor(FileData file)
         {
             if (file.MinVersion == file.MaxVersion) {
-                return $"This patch seems to be made for {file.MinVersion} {file.Name}";
+                return $"This patch seems to be for {file.MinVersion}'s {file.Name}.";
             }
-            return $"This patch seems to be made for {file.MinVersion}-{file.MaxVersion} {file.Name}";
+            return $"This patch seems to be for {file.MinVersion}-{file.MaxVersion}'s {file.Name}.";
         }
 
 

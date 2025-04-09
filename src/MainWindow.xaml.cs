@@ -48,7 +48,7 @@ namespace PTVersionDownloader
                     searchString = "";
                     IsEnabled = false;
                     MessageBoxResult result = MessageBox.Show(
-                        "Populate patchidentifier.json with installed versions? (This may take a really long time. You might also want to run /identifiersums after this.)",
+                        "Populate patchidentifier.json with installed versions? (This may take a while.)",
                         "Secret Debug Command", MessageBoxButton.YesNo, MessageBoxImage.Question
                     );
                     if (result == MessageBoxResult.Yes)
@@ -60,36 +60,6 @@ namespace PTVersionDownloader
                         try
                         {
                             await Task.Run(() => PatchIdentifier.Populate(progress));
-                        }
-                        finally
-                        {
-                            progress.Close();
-                        }
-                        PatchIdentifier.Save();
-                        MessageBox.Show("Done.", "Secret Debug Command");
-                    }
-                    IsEnabled = true;
-                    return;
-                }
-                if (searchString.Equals("/identifiersums", StringComparison.InvariantCultureIgnoreCase))
-                {
-                    // just in case
-                    PatchIdentifier.Files = PatchIdentifier.ParseData();
-                    searchString = "";
-                    IsEnabled = false;
-                    MessageBoxResult result = MessageBox.Show(
-                        "Populate patchidentifier.json with xdelta checksums? (This will require the min version of every identifiable file to be installed.)",
-                        "Secret Debug Command", MessageBoxButton.YesNo, MessageBoxImage.Question
-                    );
-                    if (result == MessageBoxResult.Yes)
-                    {
-                        ProgressWindow progress = new("Populating patch identifier...")
-                        {
-                            Owner = this
-                        };
-                        try
-                        {
-                            await Task.Run(() => PatchIdentifier.PopulateSums(progress));
                         }
                         finally
                         {
@@ -299,7 +269,7 @@ namespace PTVersionDownloader
             }
         }
 
-        private void IdentifyPatch_Click(object sender, RoutedEventArgs e)
+        private async Task DoIdentifyPatch()
         {
             try
             {
@@ -307,20 +277,54 @@ namespace PTVersionDownloader
                 {
                     FileName = "patch.xdelta",
                     DefaultExt = ".xdelta",
-                    Filter = "xdelta patches (*.xdelta)|*.xdelta|All files (*.*)|*",
+                    Filter = "xdelta patches (*.xdelta)|*.xdelta|All files (*.*)|*"
                 };
                 bool? result = dialog.ShowDialog();
                 if (!result.GetValueOrDefault()) return;
-                Tuple<string, PTVersion> message = PatchIdentifier.Identify(dialog.FileName);
-                if (Versions.Contains(message.Item2)) {
+
+                IsEnabled = false;
+                ProgressWindow progress = new("Analyzing patch (may take a while on large patches)...", true)
+                {
+                    Owner = this
+                };
+                progress.Show();
+                Tuple<string, PTVersion> message;
+                try
+                {
+                    message = await Task.Run(() =>
+                    {
+                        return PatchIdentifier.Identify(dialog.FileName);
+                    });
+                }
+                finally
+                {
+                    progress.Close();
+                }
+
+                if (Versions.Contains(message.Item2))
+                {
                     VersionGrid.SelectedValue = message.Item2;
                 }
                 MessageBox.Show(message.Item1, "Result", MessageBoxButton.OK);
             }
-            catch(Exception ex)
+            catch (PatchIdentifier.PatchIdentifierException ex)
             {
-                MessageBox.Show($"Could not identify patch: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show($"Could not identify patch version: {ex.Message}\nThis is probably not a bug.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error in the patch version identifier. This is probably an actual bug: {ex}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            finally
+            {
+                IsEnabled = true;
+            }
+        }
+        private void IdentifyPatch_Click(object sender, RoutedEventArgs e)
+        {
+#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
+            DoIdentifyPatch();
+#pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
         }
 
         private void OpenVersionsFolder_Click(object sender, RoutedEventArgs e)

@@ -61,6 +61,14 @@
                     >DepotDownloader</Hyperlink>.
                 </Paragraph>
                 <Paragraph>
+                    Patch identification uses
+                    <Hyperlink
+                        NavigateUri="https://github.com/jmacd/xdelta/"
+                        RequestNavigate="Hyperlink_RequestNavigate"
+                        Foreground="CornflowerBlue"
+                    >xdelta</Hyperlink>.
+                </Paragraph>
+                <Paragraph>
                     App icon is based off of a sprite from Pizza Tower, edited and downscaled by CST1229.
                 </Paragraph>
                 <Paragraph>

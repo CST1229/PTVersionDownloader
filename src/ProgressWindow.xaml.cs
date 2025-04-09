@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -23,12 +24,13 @@ namespace PTVersionDownloader
         private int Count = 0;
         public string TitleText = "";
 
-        public ProgressWindow(string titleText)
+        public ProgressWindow(string titleText, bool indeterminate = false)
         {
             InitializeComponent();
 
             TitleText = titleText;
             Progress.Value = 0;
+            if (indeterminate) Progress.IsIndeterminate = true;
             UpdateTitleText();
         }
 
@@ -41,7 +43,11 @@ namespace PTVersionDownloader
 
         private void UpdateTitleText()
         {
-            Text.Text = $"{TitleText} ({Count}/{Max})";
+            Title = TitleText;
+            if (Progress.IsIndeterminate)
+                Text.Text = TitleText;
+            else
+                Text.Text = $"{TitleText} ({Count}/{Max})";
         }
         public void Increment()
         {
