@@ -62,14 +62,16 @@ namespace PTVersionDownloader
 
             string rememberPasswordArg = rememberPassword ? "-remember-password " : "";
 
-            ProcessStartInfo startInfo = new ProcessStartInfo();
-            startInfo.CreateNoWindow = false;
-            startInfo.UseShellExecute = true;
-            startInfo.FileName = depotdownloader;
-            startInfo.WindowStyle = ProcessWindowStyle.Normal;
-            startInfo.WorkingDirectory = Global.assemblyLocation;
-            startInfo.Arguments = $@"-app {appID} -depot {depotID} -manifest {manifestID} {rememberPasswordArg}-username ""{username}"" -dir {outputDir}";
-            using Process process = new Process();
+            ProcessStartInfo startInfo = new()
+            {
+                CreateNoWindow = false,
+                UseShellExecute = true,
+                FileName = depotdownloader,
+                WindowStyle = ProcessWindowStyle.Normal,
+                WorkingDirectory = Global.assemblyLocation,
+                Arguments = $@"-app {appID} -depot {depotID} -manifest {manifestID} {rememberPasswordArg}-username ""{username}"" -dir {outputDir}"
+            };
+            using Process process = new();
             process.StartInfo = startInfo;
 
             process.Start();
@@ -109,7 +111,7 @@ namespace PTVersionDownloader
             if (!(Keyboard.Modifiers.HasFlag(ModifierKeys.Control) || Keyboard.Modifiers.HasFlag(ModifierKeys.Shift))) return false;
             string username = GetSteamUsername();
             if (username == "") return false;
-            downloadedDepot = DoDownload(Global.config.DownloadRememberPassword, PTVersion.AppID, PTVersion.DepotID, manifestID, username, outputDir);
+            downloadedDepot = DoDownload(Global.config.DownloadRememberPassword, appID, depotID, manifestID, username, outputDir);
             return true;
         }
 

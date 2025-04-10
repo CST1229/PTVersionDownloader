@@ -63,13 +63,15 @@ namespace PTVersionDownloader
 
         private void Done_Click(object sender, RoutedEventArgs e)
         {
-            Close();
             if (PerformFinalMove(DepotPath)) return;
-            OpenFolderDialog dialog = new OpenFolderDialog();
-            dialog.Title = "Select the path to the downloaded depot";
+            OpenFolderDialog dialog = new()
+            {
+                Title = "Select the path to the downloaded depot"
+            };
             if (dialog.ShowDialog() != true) {
                 DownloadedDepot = false;
-                MessageBox.Show("Did not select the depot path; version will not be added.", "Warning", MessageBoxButton.OK, MessageBoxImage.Warning);
+                Close();
+                MessageBox.Show("Did not select the depot path; version will not be downloaded.", "Warning", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             };
             string folder = dialog.FolderName;
@@ -77,8 +79,41 @@ namespace PTVersionDownloader
             MessageBox.Show("You somehow selected a folder that doesn't exist???", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
         }
 
+        private static readonly string[] FilesNeeded = [
+            "PizzaTower.exe",
+            "data.win",
+            "sound/Desktop/Master.strings.bank",
+            "sound/Desktop/Master.bank",
+            "sound/Desktop/music.bank",
+            "sound/Desktop/sfx.bank",
+            "fmod.dll",
+            "fmodstudio.dll",
+            "fmod-gamemaker.dll",
+            "gameframe_x64.dll",
+            "lang/english.txt",
+        ];
+        private static readonly long MinFileLength = 1000;
+        private static bool CheckTooFast(string folder, out string errorFile)
+        {
+            foreach (string file in FilesNeeded)
+            {
+                string path = Path.Join(folder, file);
+                if (!File.Exists(path) || new FileInfo(path).Length < MinFileLength) {
+                    errorFile = path;
+                    return true;
+                }
+            }
+            errorFile = "";
+            return false;
+        }
+
         private bool PerformFinalMove(string folder)
         {
+            if (CheckTooFast(folder, out string errorFile))
+            {
+                MessageBox.Show($"Please wait for the download to finish, then click Done again.\n(file not found or less than 1KB: {errorFile})", "Too fast!", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return true;
+            }
             if (Directory.Exists(folder))
             {
                 Directory.CreateDirectory(PTVersion.VersionsFolder);
@@ -86,6 +121,7 @@ namespace PTVersionDownloader
                 {
                     MoveDirectory(folder, OutputDir, true);
                     DownloadedDepot = true;
+                    Close();
                 } catch (Exception ex)
                 {
                     MessageBox.Show($"Could not move the folder to the downloader's folder: {ex}\n" +
